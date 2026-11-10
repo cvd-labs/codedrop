@@ -1,0 +1,20 @@
+<!doctype html><meta charset="utf-8"><title>GitHub-style eight digit fields</title>
+<!-- Eight one-digit boxes, each in its own wrapper, laid out as two groups of
+     four (the hardest grouping case). Open with ?mode=eight. -->
+<body style="font-family:sans-serif;padding:40px">
+<h2>Confirm your email address</h2>
+<p>Enter code</p>
+<div class="otp" style="display:flex;gap:16px"><div class="g" style="display:flex;gap:6px"></div><div class="g" style="display:flex;gap:6px"></div></div>
+<script>
+const groups = document.querySelectorAll(".g");
+const boxes = [];
+for (let i = 0; i < 8; i++) {
+  const wrap = document.createElement("span"), input = document.createElement("input");
+  input.type = "text"; input.maxLength = 1; input.inputMode = "numeric"; input.setAttribute("aria-label", `Digit ${i + 1}`);
+  input.style.cssText = "width:40px;height:48px;font-size:22px;text-align:center";
+  input.addEventListener("input", () => { if (input.value && boxes[i + 1]) boxes[i + 1].focus(); });
+  wrap.append(input); groups[i < 4 ? 0 : 1].append(wrap); boxes.push(input);
+}
+window.__value = () => boxes.map((b) => b.value).join("");
+</script>
+<script src="stub.js"></script><script src="../../code-bubble.js"></script>

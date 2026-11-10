@@ -1,0 +1,24 @@
+<!doctype html><meta charset="utf-8"><title>Microsoft-style six digit fields</title>
+<!-- Six inputs, each wrapped in its own elements, labelled "Enter code digit N".
+     Only box 1 has autocomplete=one-time-code and no maxlength (the case that
+     used to be detected as "one box"). Typing moves focus to the next box. -->
+<body style="font-family:sans-serif;padding:40px">
+<h2>Enter your code</h2>
+<form id="f" onsubmit="event.preventDefault(); window.__submitted = true;">
+  <div class="row" style="display:flex;gap:8px"></div>
+  <button>Sign in</button>
+</form>
+<script>
+const row = document.querySelector(".row");
+const boxes = [];
+for (let i = 0; i < 6; i++) {
+  const outer = document.createElement("div"), inner = document.createElement("div"), input = document.createElement("input");
+  input.type = "text"; input.inputMode = "numeric"; input.setAttribute("aria-label", `Enter code digit ${i + 1}`);
+  if (i === 0) input.autocomplete = "one-time-code"; else input.maxLength = 1;
+  input.style.cssText = "width:40px;height:48px;font-size:22px;text-align:center";
+  input.addEventListener("input", () => { input.value = input.value.replace(/\D/g, "").slice(-1); if (input.value && boxes[i + 1]) boxes[i + 1].focus(); });
+  inner.append(input); outer.append(inner); row.append(outer); boxes.push(input);
+}
+window.__value = () => boxes.map((b) => b.value).join("");
+</script>
+<script src="stub.js"></script><script src="../../code-bubble.js"></script>

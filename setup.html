@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CodeDrop setup</title>
+    <link rel="stylesheet" href="setup.css" />
+  </head>
+  <body>
+    <main>
+      <h1>CodeDrop</h1>
+      <p class="lead">When a supported site asks for an emailed code, CodeDrop finds it in Gmail and offers it right next to the box. You click Fill.</p>
+
+      <section id="needs-client" class="card hidden">
+        <h2>One-time Google setup</h2>
+        <p>This copy has no Google sign-in ID yet, so it can't read Gmail. Follow the setup steps in the README, then put the Client ID into <code>manifest.json</code> and reload CodeDrop.</p>
+        <p class="meta">Extension ID to use in Google Cloud: <code id="ext-id"></code></p>
+      </section>
+
+      <section class="card">
+        <h2>Gmail</h2>
+        <p id="status">Checking…</p>
+        <div class="row">
+          <button id="connect" class="primary hidden">Connect Gmail</button>
+          <button id="disconnect" class="hidden">Disconnect</button>
+        </div>
+        <p class="meta">Read-only access. CodeDrop looks only at emails from the senders below, from the last 10 minutes, and only while a code box is open on that site. Nothing is sent anywhere except Google.</p>
+      </section>
+
+      <section class="card">
+        <h2>Where CodeDrop works</h2>
+        <p><strong>Built in:</strong> <span id="builtin-count"></span> popular sites. The bubble appears automatically.</p>
+        <details><summary class="meta">Show built-in sites</summary><p id="builtin" class="meta"></p></details>
+        <p><strong>Sites you turned on:</strong></p>
+        <ul id="enabled"></ul>
+        <p class="meta">On any other site, CodeDrop's toolbar icon gets an orange dot when the page shows a code box. Click it and choose <em>Turn on</em>.</p>
+      </section>
+
+      <section class="card">
+        <h2>Which emails are trusted</h2>
+        <p>A code is offered on a site only if Gmail confirms the email really came from the same company as that site (DMARC or DKIM pass). For example, a code from <code>noreply@github.com</code> is offered on github.com, never on a lookalike site.</p>
+        <p class="meta">Companies that send from a different domain they own:</p>
+        <table>
+          <thead><tr><th>Site</th><th>May also send from</th></tr></thead>
+          <tbody id="aliases"></tbody>
+        </table>
+      </section>
+    </main>
+    <script src="setup.js"></script>
+  </body>
+</html>

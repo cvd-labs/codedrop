@@ -1,0 +1,14 @@
+<!doctype html><meta charset="utf-8"><title>Hidden single input (muse.ai style)</title>
+<body style="font-family:sans-serif;padding:40px">
+<h2>Enter your code to log in</h2>
+<span id="lbl" hidden>6-digit security code</span>
+<div id="row" style="position:relative;display:flex;gap:10px;width:396px">
+  <input id="real" type="text" inputmode="numeric" maxlength="6" aria-labelledby="lbl" style="position:absolute;left:0;top:0;width:1px;height:1px;opacity:0;border:0;padding:0">
+</div>
+<script>
+const row = document.getElementById("row"), real = document.getElementById("real");
+const boxes = [...Array(6)].map(() => { const d = document.createElement("div"); d.style.cssText = "width:56px;height:56px;background:#ddd;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:24px"; row.append(d); return d; });
+real.addEventListener("input", () => { const v = real.value.replace(/\D/g, "").slice(0, 6); real.value = v; boxes.forEach((b, i) => b.textContent = v[i] || ""); });
+window.__value = () => real.value;
+</script>
+<script src="stub.js"></script><script src="../../code-bubble.js"></script>
