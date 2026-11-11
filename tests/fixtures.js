@@ -101,3 +101,18 @@ function cdGitHubLaunchCode(receivedAt, code) {
     ].join("\n")
   });
 }
+// Starlink "Your Starlink verification code" email (Nov 2026 layout): the code
+// appears twice, next to a long signed link and a ZIP code.
+function cdStarlinkCode(receivedAt, code) {
+  return cdTestMessage({
+    id: "sl1",
+    receivedAt,
+    headers: {
+      "Authentication-Results": "mx.google.com;\n       dkim=pass header.i=@starlink.com header.s=s1;\n       spf=pass smtp.mailfrom=no-reply@starlink.com;\n       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=starlink.com",
+      "From": "Starlink <no-reply@starlink.com>",
+      "Subject": "Your Starlink verification code",
+      "To": "user@example.com"
+    },
+    plain: `Use code ${code} to verify your identity with Starlink.\n\n| ### Do not share this code with anyone # ${code} Use the 6-digit code above to verify your identity. For security reasons, it will expire in 15 minutes. If you did not request this passcode, please reset your password[](https://starlink.com/api/notifications/v1/redirect/eyJhbGciOiJIUzI1NiJ9.eyJkZWxpdmVyeUlkIjoiMDI4OUYxQ0E3OUMwNzdFMTki.Gs9wzRCu4koioT1hc). ------------------------------ Space Exploration Technologies Corp | 1 Rocket Road, Hawthorne, CA 90250`
+  });
+}

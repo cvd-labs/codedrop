@@ -31,7 +31,7 @@ A code is only useful to an attacker if you can be tricked into typing it on the
 
 ## Where it works
 
-- **128 popular sites, built in** (Microsoft, Apple, Amazon, PayPal, the big banks, Netflix, Uber, Airbnb, LinkedIn, X, ChatGPT, Claude, GitHub, Slack, Zoom…). The bubble appears automatically. The list is in `manifest.json` under `content_scripts`.
+- **129 popular sites, built in** (Microsoft, Apple, Amazon, Starlink, PayPal, the big banks, Netflix, Uber, Airbnb, LinkedIn, X, ChatGPT, Claude, GitHub, Slack, Zoom…). The bubble appears automatically. The list is in `manifest.json` under `content_scripts`.
 - **Any other https site:** when a page shows a code box, CodeDrop's toolbar icon gets an **orange dot**. Click it → **Turn on**, and Chrome asks you once. After that the bubble appears automatically on that site. Turn sites off from the popup or the Settings page.
 
 ## Install (developer mode)

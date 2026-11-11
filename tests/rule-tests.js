@@ -33,6 +33,12 @@ function cdRunRuleTests() {
   check("github: offered on github.com", offer("github.com", [gh]), { code: "01234567", from: "GitHub" });
   check("github: not offered on lookalike", offer("github-signup.help", [gh]), { reason: "waiting" });
 
+  // Starlink.
+  const sl = cdStarlinkCode(now - 10000, "246813");
+  check("starlink: code extracted once (not the ZIP or link)", cdParseMessage(sl).codes, ["246813"]);
+  check("starlink: offered on www.starlink.com", offer("www.starlink.com", [sl]), { code: "246813", from: "Starlink" });
+  check("starlink: not offered on lookalike", offer("starlink-support.help", [sl]), { reason: "waiting" });
+
   // Meta (muse.ai) still works.
   check("meta: offered on muse.ai", offer("muse.ai", [cdMetaLoginCode(now - 5000, "654321")]), { code: "654321", from: "Meta" });
   check("meta: not offered on login.live.com", offer("login.live.com", [cdMetaLoginCode(now - 5000, "654321")]), { reason: "waiting" });
