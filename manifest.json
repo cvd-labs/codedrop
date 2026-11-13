@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "CodeDrop",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "minimum_chrome_version": "120",
   "description": "Offers the verification code from your Gmail right next to the code box. You click Fill. On-device prototype.",
   "action": {
@@ -72,6 +72,7 @@
         "https://*.ebay.com/*",
         "https://*.epicgames.com/*",
         "https://*.etsy.com/*",
+        "https://*.eufy.com/*",
         "https://*.expedia.com/*",
         "https://*.facebook.com/*",
         "https://*.figma.com/*",

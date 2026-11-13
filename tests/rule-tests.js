@@ -39,6 +39,18 @@ function cdRunRuleTests() {
   check("starlink: offered on www.starlink.com", offer("www.starlink.com", [sl]), { code: "246813", from: "Starlink" });
   check("starlink: not offered on lookalike", offer("starlink-support.help", [sl]), { reason: "waiting" });
 
+  // eufy: store sign-in on eufy.com, code emailed from eufylife.com.
+  const eufy = cdEufyCode(now - 10000, "135790");
+  check("eufy: code extracted once (subject and body)", cdParseMessage(eufy).codes, ["135790"]);
+  check("eufy: offered on order.us.eufy.com", offer("order.us.eufy.com", [eufy]), { code: "135790", from: "eufy" });
+  check("eufy: offered on passport.eufy.com", offer("passport.eufy.com", [eufy]).code, "135790");
+  check("eufy: not offered on lookalike", offer("eufy-orders.help", [eufy]), { reason: "waiting" });
+  check("eufy: not offered on github.com", offer("github.com", [eufy]), { reason: "waiting" });
+  check("eufy: spoof without Gmail pass refused", offer("order.us.eufy.com", [cdEufyCode(now, "135790", {
+    "Authentication-Results": "mx.google.com; dkim=pass header.i=@sendgrid.info header.s=smtpapi; spf=pass smtp.mailfrom=bounce@evil.example; dmarc=fail (p=QUARANTINE) header.from=eufylife.com"
+  })]), { reason: "sender_unverified" });
+  check("eufy: site name before a code arrives", cdCompanyName("eufy.com"), "eufy");
+
   // Meta (muse.ai) still works.
   check("meta: offered on muse.ai", offer("muse.ai", [cdMetaLoginCode(now - 5000, "654321")]), { code: "654321", from: "Meta" });
   check("meta: not offered on login.live.com", offer("login.live.com", [cdMetaLoginCode(now - 5000, "654321")]), { reason: "waiting" });

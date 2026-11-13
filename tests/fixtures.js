@@ -116,3 +116,36 @@ function cdStarlinkCode(receivedAt, code) {
     plain: `Use code ${code} to verify your identity with Starlink.\n\n| ### Do not share this code with anyone # ${code} Use the 6-digit code above to verify your identity. For security reasons, it will expire in 15 minutes. If you did not request this passcode, please reset your password[](https://starlink.com/api/notifications/v1/redirect/eyJhbGciOiJIUzI1NiJ9.eyJkZWxpdmVyeUlkIjoiMDI4OUYxQ0E3OUMwNzdFMTki.Gs9wzRCu4koioT1hc). ------------------------------ Space Exploration Technologies Corp | 1 Rocket Road, Hawthorne, CA 90250`
   });
 }
+// eufy "<code> is your code" sign-in email (Nov 2026 layout). eufy's store
+// sign-in sends from eufylife.com, with a second DKIM signature from the mail
+// service. The code is in the subject and alone on a line under the heading.
+function cdEufyCode(receivedAt, code, overrides) {
+  const headers = Object.assign({
+    "Authentication-Results": "mx.google.com;\n       dkim=pass header.i=@eufylife.com header.s=1o2 header.b=abcdEFGH;\n       dkim=pass header.i=@sendgrid.info header.s=smtpapi header.b=ijklMNOP;\n       spf=pass (google.com: domain of bounces+1234-5678-user=example.com@mailer1o2.eufylife.com designates 192.0.2.65 as permitted sender) smtp.mailfrom=\"bounces+1234-5678-user=example.com@mailer1o2.eufylife.com\";\n       dmarc=pass (p=QUARANTINE sp=QUARANTINE dis=NONE) header.from=eufylife.com",
+    "From": "eufy <noreply-service@eufylife.com>",
+    "Subject": `${code} is your code`,
+    "To": "user@example.com"
+  }, overrides || {});
+  const plain = [
+    "eufy Logo",
+    "",
+    "***********************",
+    "Your verification code:",
+    "***********************",
+    "",
+    "------",
+    code,
+    "------",
+    "",
+    "This code can only be",
+    "used once. It expires in 15 minutes.",
+    "",
+    "\u00a9 eufy",
+    "",
+    "Privacy policy ",
+    "( https://us.eufy.com/policies/privacy-policy )",
+    "Terms of service ",
+    "( https://us.eufy.com/policies/terms-of-service )"
+  ].join("\r\n");
+  return cdTestMessage({ id: "eufy1", receivedAt, headers, plain });
+}

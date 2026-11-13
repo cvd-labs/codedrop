@@ -1622,7 +1622,8 @@ var CD_ALIASES = {
   "steamcommunity.com": ["steampowered.com"],
   "atlassian.net": ["atlassian.com"],
   "bitbucket.org": ["atlassian.com"],
-  "amazon.com": ["amazonaws.com"]
+  "amazon.com": ["amazonaws.com"],
+  "eufy.com": ["eufylife.com"]
 };
 function cdAllowedSenders(siteReg) {
   const allowed = /* @__PURE__ */ new Set([siteReg]);
@@ -1819,7 +1820,8 @@ var CD_COMPANY_NAMES = {
   "steampowered.com": "Steam", "steamcommunity.com": "Steam", "epicgames.com": "Epic Games", "playstation.com": "PlayStation",
   "khanacademy.org": "Khan Academy", "nytimes.com": "New York Times", "wsj.com": "WSJ", "aa.com": "American Airlines",
   "disneyplus.com": "Disney+", "max.com": "Max", "ea.com": "EA", "aol.com": "AOL", "proton.me": "Proton", "docusign.com": "DocuSign",
-  "atlassian.com": "Atlassian", "atlassian.net": "Atlassian", "bitbucket.org": "Bitbucket", "zoom.us": "Zoom", "wise.com": "Wise"
+  "atlassian.com": "Atlassian", "atlassian.net": "Atlassian", "bitbucket.org": "Bitbucket", "zoom.us": "Zoom", "wise.com": "Wise",
+  "eufy.com": "eufy", "eufylife.com": "eufy"
 };
 function cdCompanyName(reg, displayName) {
   if (CD_COMPANY_NAMES[reg]) return CD_COMPANY_NAMES[reg];
