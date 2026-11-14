@@ -149,3 +149,18 @@ function cdEufyCode(receivedAt, code, overrides) {
   ].join("\r\n");
   return cdTestMessage({ id: "eufy1", receivedAt, headers, plain });
 }
+// Best Buy "Your verification code for your BestBuy.com account" email (Nov 2026
+// plain-text layout): the code runs straight into the next sentence.
+function cdBestBuyCode(receivedAt, code) {
+  return cdTestMessage({
+    id: "bb1",
+    receivedAt,
+    headers: {
+      "Authentication-Results": "mx.google.com;\n       dkim=pass header.i=@emailinfo.bestbuy.com header.s=200608;\n       spf=pass smtp.mailfrom=bounce@emailinfo.bestbuy.com;\n       dmarc=pass (p=REJECT sp=REJECT dis=NONE) header.from=emailinfo.bestbuy.com",
+      "From": "Best Buy Notifications <BestBuyInfo@emailinfo.bestbuy.com>",
+      "Subject": "Your verification code for your BestBuy.com account",
+      "To": "user@example.com"
+    },
+    plain: `Best Buy | Your verification code for your BestBuy.com account | CIA_CA_AcctVerificationCode\n\n Use this code to verify your account on BestBuy.com.\n\n View:\nhttps://click.emailinfo2.bestbuy.com/?qs=ABp7ImQiOjUwNjAsInQiOjEzNDU0\nWeb\n\n Please use this code to verify your account.\n\n Please enter this verification code on BestBuy.com(R) to verify your identity.Verification Code:${code}If you have any questions,\nhttps://www.bestbuy.com/contact-us?ref=E10C06R008&loc=BODY&CampaignID=516\nemail us or give us a call at 1-888-BEST BUY (1-888-237-8289).\n\n Best Buy 7601 Penn Avenue South, Richfield, MN 55423-3645\n\n (c) 2026 Best Buy. All rights reserved.`
+  });
+}

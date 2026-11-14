@@ -50,6 +50,11 @@ function cdRunRuleTests() {
     "Authentication-Results": "mx.google.com; dkim=pass header.i=@sendgrid.info header.s=smtpapi; spf=pass smtp.mailfrom=bounce@evil.example; dmarc=fail (p=QUARANTINE) header.from=eufylife.com"
   })]), { reason: "sender_unverified" });
   check("eufy: site name before a code arrives", cdCompanyName("eufy.com"), "eufy");
+  // Best Buy (regression: code glued to the next word was not read).
+  const bb = cdBestBuyCode(now - 10000, "135791");
+  check("bestbuy: glued code extracted (not phone, ZIP or link digits)", cdParseMessage(bb).codes, ["135791"]);
+  check("bestbuy: offered on www.bestbuy.com", offer("www.bestbuy.com", [bb]), { code: "135791", from: "Best Buy" });
+  check("bestbuy: not offered on lookalike", offer("bestbuy-deals.help", [bb]), { reason: "waiting" });
 
   // Meta (muse.ai) still works.
   check("meta: offered on muse.ai", offer("muse.ai", [cdMetaLoginCode(now - 5000, "654321")]), { code: "654321", from: "Meta" });
@@ -65,6 +70,7 @@ function cdRunRuleTests() {
   check("wording: 8-digit after 'the code below:'", codes("Enter the code below:\n\n87654321"), ["87654321"]);
   check("wording: strong code beats a year nearby", codes("Your verification code is 482915. \u00a9 2026 Example Inc."), ["482915"]);
   check("wording: year alone is not a code", codes("Your verification email from 2026"), []);
+  check("wording: number glued to a word, no code wording, ignored", codes("Your verification email: order 5521abc shipped"), []);
   check("wording: digits inside an ID are ignored", codes("Verification id 361f4334-874a"), []);
   check("wording: order number ignored", codes("Order number 123456 has shipped"), []);
   check("wording: zip code ignored", codes("Zip code: 123456"), []);

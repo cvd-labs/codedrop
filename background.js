@@ -564,7 +564,9 @@ function randomId() {
 // "Login code", "the code below:") is a strong match and wins; otherwise a
 // number with code wording nearby is a weak match. Short numbers that look like
 // years are only accepted as strong matches.
-var CODE = /(?<![0-9A-Za-z])(\d{4,8})(?![0-9A-Za-z])/g;
+// A code may run straight into a word ("Code:729739If you have…", Best Buy's
+// plain text), but then only right after code wording, never as a weak match.
+var CODE = /(?<![0-9A-Za-z])(\d{4,8})(?![0-9])/g;
 var LABEL = /verification(?:\s+code)?|security\s+code|log[- ]?in\s+code|sign[- ]?in\s+code|launch\s+code|one[- ]time(?:\s+code|\s+password|\s+passcode)?|single[- ]use\s+code|temporary\s+code|access\s+code|\botp\b|\b2fa\b|passcode|authentication\s+code|authorization\s+code|confirmation\s+code/i;
 var LABEL_RIGHT_BEFORE = new RegExp(`(?:${LABEL.source})\\s*(?:is\\s*:?|:|-)?\\s*$`, "i");
 function isStrongCodeContext(before) {
@@ -583,9 +585,10 @@ ${body}`.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "").slice(0,
     const before = text.slice(Math.max(0, index - 60), index);
     const after = text.slice(index + code.length, index + code.length + 40);
     if (isExcluded(before) || isUrlNeighbor(before, after)) continue;
+    const gluedToWord = /^[A-Za-z]/.test(after);
     if (isStrongCodeContext(before)) {
       strong.add(code);
-    } else if ((LABEL.test(before) || LABEL.test(after)) && !(code.length === 4 && /^(19|20)\d\d$/.test(code))) {
+    } else if (!gluedToWord && (LABEL.test(before) || LABEL.test(after)) && !(code.length === 4 && /^(19|20)\d\d$/.test(code))) {
       weak.add(code);
     }
   }
